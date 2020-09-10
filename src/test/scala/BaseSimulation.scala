@@ -221,7 +221,7 @@ class BaseSimulation extends Simulation {
         holdFor(1 minute),
         /*jumpToRps(2),
         holdFor(1 minute)*/
-    )
+    ),
 /*    userGetServerList.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
       holdFor(1 minute),
@@ -344,5 +344,5 @@ class BaseSimulation extends Simulation {
     )*/
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
-    .assertions(details("userAuth").responseTime.max.lt(1000))
+    .assertions(details("get id.../auth").responseTime.max.lt(1000))
 }
