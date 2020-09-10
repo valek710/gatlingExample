@@ -344,5 +344,5 @@ class BaseSimulation extends Simulation {
     )*/
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
-    .assertions(details("get id.../auth").responseTime.max.lt(1000))
+    .assertions(details("get id.../auth").responseTime.max.lt(100))
 }
