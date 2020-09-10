@@ -222,7 +222,7 @@ class BaseSimulation extends Simulation {
         /*jumpToRps(2),
         holdFor(1 minute)*/
     ),
-/*    userGetServerList.inject(atOnceUsers(150)).throttle(
+    userGetServerList.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
       holdFor(1 minute),
       /*jumpToRps(2),
@@ -262,7 +262,7 @@ class BaseSimulation extends Simulation {
       reachRps(1) in (30 seconds),
       holdFor(1 minute),
       /*jumpToRps(2),
-      holdFor(2 minute)*/
+      holdFor(1 minute)*/
     ),
     userGetWorkflows50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
@@ -273,8 +273,8 @@ class BaseSimulation extends Simulation {
     userGetDrafts10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetDrafts50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
@@ -341,8 +341,8 @@ class BaseSimulation extends Simulation {
       holdFor(1 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    )*/
+    )
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
-    .assertions(details("get id.../auth").responseTime.max.lt(100))
+    .assertions(details("get id.../auth").responseTime.max.lt(1000))
 }
