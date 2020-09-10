@@ -4,7 +4,7 @@ import io.gatling.http.Predef._
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
-  val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiZjlhNTAxMTJkY2U1NDEzM2JmZjBkMDUxYTk1NzljM2Y3MjNhNTI4MSIsInJlZnJlc2hUb2tlbiI6IjRlNjlmY2EwMDZmZGY2ZmYyMDNmY2QxYzU2Mzc1ODRmZWRiZmE3YjEifSwiaWF0IjoxNTk5MzIwNTk3fQ.Nk2q-_Qv08wU5YSn7fxtgZ2z9vdjqZyXytZM0ilgld4"
+  val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiNjM2OWIwZTdhOThjMWRmYTAxN2JlMzRjOWVkZWNmM2ViYzUzMjAxZSIsInJlZnJlc2hUb2tlbiI6IjgzZjFhN2Y3NWMzN2U4NmI2NmRjOTlhMTQzZjY4MWMyY2M4ODhjNDAifSwiaWF0IjoxNTk5NzU1NDA1fQ.8wD6FEKgmJDHVUFD2C8BdhdSSSPtnNjmJQbUlVmVlfM"
 
   /*
     Настройки для HTTP
@@ -215,9 +215,6 @@ class BaseSimulation extends Simulation {
           .check(status.is(200))
       )
 
-  /*
-  Сценарий нагрузки. Здесь указываем характер генерируемой нагрузки, модель поднятия пользователей, их количество и длительность нагрузки.
-  */
   setUp(
     userAuth.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
@@ -346,4 +343,6 @@ class BaseSimulation extends Simulation {
       holdFor(1 minute)*/
     )
   ).protocols(httpConf).maxDuration(10 minutes)
+    .assertions(global.successfulRequests.percent.gt(95))
+    .assertions(details("Auth").responseTime.max.lt(1000))
 }
