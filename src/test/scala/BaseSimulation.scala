@@ -338,12 +338,6 @@ class BaseSimulation extends Simulation {
       jumpToRps(2),
       holdFor(1 minute)
     ),*/
-    userStartWorkflow.inject(atOnceUsers(60)).throttle(
-      reachRps(1) in (4 seconds),
-      holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
-    )
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
     .assertions(details("get id.../auth").responseTime.max.lt(1000))
