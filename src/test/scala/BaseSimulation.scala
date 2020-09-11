@@ -4,7 +4,7 @@ import io.gatling.http.Predef._
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
-  val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiNjM2OWIwZTdhOThjMWRmYTAxN2JlMzRjOWVkZWNmM2ViYzUzMjAxZSIsInJlZnJlc2hUb2tlbiI6IjgzZjFhN2Y3NWMzN2U4NmI2NmRjOTlhMTQzZjY4MWMyY2M4ODhjNDAifSwiaWF0IjoxNTk5NzU1NDA1fQ.8wD6FEKgmJDHVUFD2C8BdhdSSSPtnNjmJQbUlVmVlfM"
+  val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiM2NmMzI2NmVjMGY4NTQyODNlZmFiMmQ5ZjgzMjZiN2Q2MmUyZGQ1MyIsInJlZnJlc2hUb2tlbiI6IjlmY2I3NzdjNWUzMjcyNzQwM2MyYzEzNzdmY2Q5NzYxOWFiMzJiMDUifSwiaWF0IjoxNTk5ODA3MjIyfQ.22WA7EyS8ed-poOB-hLmAdBqcTAhbKHTyDqz6ki1DnA"
 
   /*
     Настройки для HTTP
@@ -215,132 +215,135 @@ class BaseSimulation extends Simulation {
           .check(status.is(200))
       )
 
+  val test = scenario("test")
+    .exec(userAuth).pause(1).exec(userCheckAuthInfo)
+
   setUp(
     userAuth.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (1 seconds),
         holdFor(1 minute),
-        /*jumpToRps(2),
-        holdFor(1 minute)*/
+        jumpToRps(2),
+        holdFor(1 minute)
     ),
     userGetServerList.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (2 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userCheckAuthInfo.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetUnits.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (4 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetInboxesUnread.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (5 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetUnreadMess.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (4 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetMessages.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetWorkflows10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (2 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetWorkflows50.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (1 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetDrafts10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (2 seconds),
       holdFor(1 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
     userGetDrafts50.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetUnitTasks10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (4 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetUnitTasks50.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (5 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetArchivedUnitTasks10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (4 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetArchivedUnitTasks50.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetTasks10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (2 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetTasks50.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (1 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetArchivedTasks10.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (2 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     ),
     userGetArchivedTasks50.inject(atOnceUsers(150)).throttle(
+      reachRps(1) in (3 seconds),
+      holdFor(1 minute),
+      jumpToRps(2),
+      holdFor(1 minute)
+    ),
+    /*userGetRegisters.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
-    ),
-    userGetRegisters.inject(atOnceUsers(150)).throttle(
-      reachRps(1) in (30 seconds),
-      holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
-    ),
+      jumpToRps(2),
+      holdFor(1 minute)
+    ),*/
     userStartWorkflow.inject(atOnceUsers(60)).throttle(
-      reachRps(1) in (30 seconds),
+      reachRps(1) in (4 seconds),
       holdFor(1 minute),
-      /*jumpToRps(2),
-      holdFor(1 minute)*/
+      jumpToRps(2),
+      holdFor(1 minute)
     )
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
