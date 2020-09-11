@@ -266,67 +266,67 @@ class BaseSimulation extends Simulation {
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetWorkflows50.inject(atOnceUsers(150)).throttle(
+/*    userGetWorkflows50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (1 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    ),
+    ),*/
     userGetDrafts10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
       holdFor(2 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetDrafts50.inject(atOnceUsers(150)).throttle(
+/*    userGetDrafts50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    ),
+    ),*/
     userGetUnitTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (4 seconds),
       holdFor(2 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetUnitTasks50.inject(atOnceUsers(150)).throttle(
+/*    userGetUnitTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (5 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    ),
+    ),*/
     userGetArchivedUnitTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (4 seconds),
       holdFor(2 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetArchivedUnitTasks50.inject(atOnceUsers(150)).throttle(
+/*    userGetArchivedUnitTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    ),
+    ),*/
     userGetTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
       holdFor(2 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetTasks50.inject(atOnceUsers(150)).throttle(
+/*    userGetTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (1 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
       holdFor(1 minute)*/
-    ),
+    ),*/
     userGetArchivedTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
       holdFor(2 minute),
       jumpToRps(2),
       holdFor(1 minute)
     ),
-    userGetArchivedTasks50.inject(atOnceUsers(150)).throttle(
+    /*userGetArchivedTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(2 minute),
       /*jumpToRps(2),
@@ -337,7 +337,7 @@ class BaseSimulation extends Simulation {
       holdFor(1 minute),
       jumpToRps(2),
       holdFor(1 minute)
-    ),*/
+    ),*/*/
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
     .assertions(details("get id.../auth").responseTime.max.lt(1000))
