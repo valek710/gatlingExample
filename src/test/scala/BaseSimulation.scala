@@ -214,8 +214,8 @@ class BaseSimulation extends Simulation {
           .check(status.is(200))
       )
 
-/*  val test: ScenarioBuilder = scenario("test")
-    .exec(userAuth).pause(1).exec(userCheckAuthInfo)*/
+  val test: ScenarioBuilder = scenario("test")
+    .exec(userAuth).pause(1).exec(userCheckAuthInfo)
 
   setUp(
     userAuth.inject(atOnceUsers(150)).throttle(
