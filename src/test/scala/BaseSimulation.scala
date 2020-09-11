@@ -245,8 +245,8 @@ class BaseSimulation extends Simulation {
     userGetInboxesUnread.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (5 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetUnreadMess.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (4 seconds),
@@ -257,8 +257,8 @@ class BaseSimulation extends Simulation {
     userGetMessages.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetWorkflows10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
@@ -269,8 +269,8 @@ class BaseSimulation extends Simulation {
     userGetWorkflows50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (1 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetDrafts10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
@@ -281,8 +281,8 @@ class BaseSimulation extends Simulation {
     userGetDrafts50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetUnitTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (4 seconds),
@@ -293,8 +293,8 @@ class BaseSimulation extends Simulation {
     userGetUnitTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (5 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetArchivedUnitTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (4 seconds),
@@ -305,8 +305,8 @@ class BaseSimulation extends Simulation {
     userGetArchivedUnitTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
@@ -317,8 +317,8 @@ class BaseSimulation extends Simulation {
     userGetTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (1 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     userGetArchivedTasks10.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (2 seconds),
@@ -329,8 +329,8 @@ class BaseSimulation extends Simulation {
     userGetArchivedTasks50.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (3 seconds),
       holdFor(1 minute),
-      jumpToRps(2),
-      holdFor(1 minute)
+      /*jumpToRps(2),
+      holdFor(1 minute)*/
     ),
     /*userGetRegisters.inject(atOnceUsers(150)).throttle(
       reachRps(1) in (30 seconds),
