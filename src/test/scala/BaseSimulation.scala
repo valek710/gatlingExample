@@ -1,15 +1,14 @@
 import io.gatling.core.Predef.{holdFor, _}
+import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
+import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
   val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiM2NmMzI2NmVjMGY4NTQyODNlZmFiMmQ5ZjgzMjZiN2Q2MmUyZGQ1MyIsInJlZnJlc2hUb2tlbiI6IjlmY2I3NzdjNWUzMjcyNzQwM2MyYzEzNzdmY2Q5NzYxOWFiMzJiMDUifSwiaWF0IjoxNTk5ODA3MjIyfQ.22WA7EyS8ed-poOB-hLmAdBqcTAhbKHTyDqz6ki1DnA"
 
-  /*
-    Настройки для HTTP
-    */
-  val httpConf = http
+  private val httpConf: HttpProtocolBuilder = http
     .baseUrl("https://task-dpss.kitsoft.kiev.ua")
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .doNotTrackHeader("1")
@@ -17,7 +16,7 @@ class BaseSimulation extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
 
-  val userAuth = scenario("User auth")
+  private val userAuth: ScenarioBuilder = scenario("User auth")
     .exec(
       http("get id.../auth")
         .get("https://id-dpss.kitsoft.kiev.ua/auth")
@@ -25,14 +24,14 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetServerList = scenario("User get server list ")
+  private val userGetServerList: ScenarioBuilder = scenario("User get server list ")
     .exec(
       http("get id.../authorise/eds/serverList")
         .get("https://id-dpss.kitsoft.kiev.ua/authorise/eds/serverList")
         .check(status.is(200))
     )
 
-  val userCheckAuthInfo = scenario("User get auth/me ")
+  private val userCheckAuthInfo: ScenarioBuilder = scenario("User get auth/me ")
     .exec(
       http("get /auth/me")
         .get("/auth/me")
@@ -40,7 +39,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetUnits = scenario("User get units ")
+  private val userGetUnits: ScenarioBuilder = scenario("User get units ")
     .exec(
       http("get /units")
         .get("/units")
@@ -48,7 +47,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetInboxesUnread = scenario("User get /user-inboxes/unread/count")
+  private val userGetInboxesUnread: ScenarioBuilder = scenario("User get /user-inboxes/unread/count")
     .exec(
       http("get /user-inboxes/unread/count")
         .get("/user-inboxes/unread/count")
@@ -56,7 +55,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetUnreadMess = scenario("User get unread messages")
+  private val userGetUnreadMess: ScenarioBuilder = scenario("User get unread messages")
     .exec(
       http("get /messages/count-unread")
         .get("/messages/count-unread")
@@ -64,7 +63,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetMessages = scenario("User get messages")
+  private val userGetMessages: ScenarioBuilder = scenario("User get messages")
     .exec(
       http("get /messages")
         .get("/messages")
@@ -72,7 +71,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetWorkflows10 = scenario("User get workflows with pagination 10")
+  private val userGetWorkflows10: ScenarioBuilder = scenario("User get workflows with pagination 10")
     .exec(
       http("get /workflows with pagination 10")
         .get("/workflows?filters%5Btasks.deleted%5D=0&filters%5Bis_draft%5D=false&filters%5Bfiltered%5D=false&sort%5Btasks%5D%5Bfinished_at%5D=desc&count=10")
@@ -80,7 +79,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetWorkflows50 = scenario("User get workflows with pagination 50")
+  private val userGetWorkflows50: ScenarioBuilder = scenario("User get workflows with pagination 50")
     .exec(
       http("get /workflows with pagination 50")
         .get("/workflows?filters%5Btasks.deleted%5D=0&filters%5Bis_draft%5D=false&filters%5Bfiltered%5D=false&sort%5Btasks%5D%5Bfinished_at%5D=desc&count=50")
@@ -88,7 +87,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetDrafts10 = scenario("User get drafts with pagination 10")
+  private val userGetDrafts10: ScenarioBuilder = scenario("User get drafts with pagination 10")
     .exec(
       http("get drafts with pagination 10")
         .get("/workflows?filters%5Btasks%5D%5Bdeleted%5D=0&filters%5Bis_draft%5D=true&filters%5Bfiltered%5D=false&sort%5Bdocuments%5D%5Bupdated_at%5D=desc&count=10")
@@ -96,7 +95,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetDrafts50 = scenario("User get drafts with pagination 50")
+  private val userGetDrafts50: ScenarioBuilder = scenario("User get drafts with pagination 50")
     .exec(
       http("get drafts with pagination 50")
         .get("/workflows?filters%5Btasks%5D%5Bdeleted%5D=0&filters%5Bis_draft%5D=true&filters%5Bfiltered%5D=false&sort%5Bdocuments%5D%5Bupdated_at%5D=desc&count=50")
@@ -104,7 +103,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetUnitTasks10 = scenario("User get unit tasks with pagination 10")
+  private val userGetUnitTasks10: ScenarioBuilder = scenario("User get unit tasks with pagination 10")
     .exec(
       http("get unit tasks with pagination 10")
         .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=10")
@@ -112,7 +111,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetUnitTasks50 = scenario("User get unit tasks with pagination 50")
+  private val userGetUnitTasks50: ScenarioBuilder = scenario("User get unit tasks with pagination 50")
     .exec(
       http("get unit tasks with pagination 50")
         .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=50")
@@ -120,7 +119,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetArchivedUnitTasks10 = scenario("User get archived unit tasks with pagination 10")
+  private val userGetArchivedUnitTasks10: ScenarioBuilder = scenario("User get archived unit tasks with pagination 10")
     .exec(
       http("get archived unit tasks with pagination 10")
         .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=10")
@@ -128,7 +127,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetArchivedUnitTasks50 = scenario("User get archived unit tasks with pagination 50")
+  private val userGetArchivedUnitTasks50: ScenarioBuilder = scenario("User get archived unit tasks with pagination 50")
     .exec(
       http("get archived unit tasks with pagination 50")
         .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=50")
@@ -136,7 +135,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetTasks10 = scenario("User get tasks with pagination 10")
+  private val userGetTasks10: ScenarioBuilder = scenario("User get tasks with pagination 10")
     .exec(
       http("get /tasks with pagination 10")
         .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=10")
@@ -144,7 +143,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetTasks50 = scenario("User get tasks with pagination 50")
+  private val userGetTasks50: ScenarioBuilder = scenario("User get tasks with pagination 50")
     .exec(
       http("get /tasks with pagination 50")
         .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=50")
@@ -152,7 +151,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetArchivedTasks10 = scenario("User get archived tasks with pagination 10")
+  private val userGetArchivedTasks10: ScenarioBuilder = scenario("User get archived tasks with pagination 10")
     .exec(
       http("get archived tasks with pagination 10")
         .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=10")
@@ -160,7 +159,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetArchivedTasks50 = scenario("User get archived tasks with pagination 50")
+  private val userGetArchivedTasks50: ScenarioBuilder = scenario("User get archived tasks with pagination 50")
     .exec(
       http("get archived tasks with pagination 50")
         .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=50")
@@ -168,7 +167,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userGetRegisters = scenario("User get registers key 15")
+  private val userGetRegisters: ScenarioBuilder = scenario("User get registers key 15")
     .exec(
       http("get /registers/keys/15/records")
         .get("/registers/keys/15/records?offset=0&limit=615")
@@ -176,7 +175,7 @@ class BaseSimulation extends Simulation {
         .check(status.is(200))
     )
 
-  val userStartWorkflow = scenario("User start random workflow")
+  private val userStartWorkflow: ScenarioBuilder = scenario("User start random workflow")
       .exec(
         http("get /workflow-templates")
           .get("/workflow-templates")
@@ -215,7 +214,7 @@ class BaseSimulation extends Simulation {
           .check(status.is(200))
       )
 
-  val test = scenario("test")
+  val test: ScenarioBuilder = scenario("test")
     .exec(userAuth).pause(1).exec(userCheckAuthInfo)
 
   setUp(
