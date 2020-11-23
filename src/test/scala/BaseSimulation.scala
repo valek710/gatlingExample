@@ -6,62 +6,17 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
-  val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTA3ODI1NDEyMzhiNzFmNGZlMTUxYTgiLCJhdXRoVG9rZW5zIjp7ImFjY2Vzc1Rva2VuIjoiM2NmMzI2NmVjMGY4NTQyODNlZmFiMmQ5ZjgzMjZiN2Q2MmUyZGQ1MyIsInJlZnJlc2hUb2tlbiI6IjlmY2I3NzdjNWUzMjcyNzQwM2MyYzEzNzdmY2Q5NzYxOWFiMzJiMDUifSwiaWF0IjoxNTk5ODA3MjIyfQ.22WA7EyS8ed-poOB-hLmAdBqcTAhbKHTyDqz6ki1DnA"
+  protected val token: String = System.getenv("TOKEN")
+  protected val url: String = System.getenv("URL")
+  protected val idUrl: String = System.getenv("ID_URL")
 
-  private val httpConf: HttpProtocolBuilder = http
-    .baseUrl("https://task-dpss.kitsoft.kiev.ua")
+  protected val httpConf: HttpProtocolBuilder = http
+    .baseUrl(url)
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .doNotTrackHeader("1")
     .acceptLanguageHeader("en-US,en;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
-
-  private val userAuth: ScenarioBuilder = scenario("User auth")
-    .exec(
-      http("get id.../auth")
-        .get("https://id-dpss.kitsoft.kiev.ua/auth")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetServerList: ScenarioBuilder = scenario("User get server list ")
-    .exec(
-      http("get id.../authorise/eds/serverList")
-        .get("https://id-dpss.kitsoft.kiev.ua/authorise/eds/serverList")
-        .check(status.is(200))
-    )
-
-  private val userCheckAuthInfo: ScenarioBuilder = scenario("User get auth/me ")
-    .exec(
-      http("get /auth/me")
-        .get("/auth/me")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnits: ScenarioBuilder = scenario("User get units ")
-    .exec(
-      http("get /units")
-        .get("/units")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetInboxesUnread: ScenarioBuilder = scenario("User get /user-inboxes/unread/count")
-    .exec(
-      http("get /user-inboxes/unread/count")
-        .get("/user-inboxes/unread/count")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnreadMess: ScenarioBuilder = scenario("User get unread messages")
-    .exec(
-      http("get /messages/count-unread")
-        .get("/messages/count-unread")
-        .header("token", token)
-        .check(status.is(200))
-    )
 
   private val userGetMessages: ScenarioBuilder = scenario("User get messages")
     .exec(
@@ -214,7 +169,7 @@ class BaseSimulation extends Simulation {
           .check(status.is(200))
       )
 
-  val test: ScenarioBuilder = scenario("test")
+  /*val test: ScenarioBuilder = scenario("test")
     .exec(userAuth).pause(1).exec(userCheckAuthInfo)
 
   setUp(
@@ -299,4 +254,5 @@ class BaseSimulation extends Simulation {
   ).protocols(httpConf).maxDuration(10 minutes)
     .assertions(global.successfulRequests.percent.gt(95))
     .assertions(details("get id.../auth").responseTime.max.lt(1000))
+   */
 }
