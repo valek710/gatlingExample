@@ -6,9 +6,11 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
-  protected val token: String = System.getenv("TOKEN")
-  protected val url: String = System.getenv("URL")
-  protected val idUrl: String = System.getenv("ID_URL")
+  protected val token: String = System.getProperty("TOKEN")
+  protected val url: String = System.getProperty("URL")
+  protected val idUrl: String = System.getProperty("ID_URL")
+  protected val rps: String = System.getProperty("RPS")
+  protected val sessions: String = System.getProperty("SESSIONS")
 
   protected val httpConf: HttpProtocolBuilder = http
     .baseUrl(url)

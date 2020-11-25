@@ -2,6 +2,8 @@ import io.gatling.core.Predef.{holdFor, _}
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration.DurationInt
+
 class OnboardSimulation extends BaseSimulation {
   private val postOnboard: ScenarioBuilder = scenario("Post onboard")
     .exec(
@@ -24,10 +26,10 @@ class OnboardSimulation extends BaseSimulation {
         )
         .check(status.is(200))
         .check(
-          jsonPath("$.data[*].id").saveAs("taskId")
+          jsonPath("$.data.id").saveAs("taskId")
         )
         .check(
-          jsonPath("$.data[*].documentId").saveAs("docId")
+          jsonPath("$.data.documentId").saveAs("docId")
         )
     )
 
@@ -45,7 +47,6 @@ class OnboardSimulation extends BaseSimulation {
           StringBody(
             """
               |{
-              | {
               | "meta":{
               | "isRead":true
               | }
@@ -53,12 +54,6 @@ class OnboardSimulation extends BaseSimulation {
           )
         )
         .check(status.is(200))
-        .check(
-          jsonPath("$.data[*].id").saveAs("taskId")
-        )
-        .check(
-          jsonPath("$.data[*].documentId").saveAs("docId")
-        )
     )
 
   private val getOnboardTask: ScenarioBuilder = scenario("Get onboard task")
@@ -169,7 +164,7 @@ class OnboardSimulation extends BaseSimulation {
   private val setActivePassportTab: ScenarioBuilder = scenario("Put active passport tab")
     .exec(
       http("Put active passport tab")
-        .put("/documents/${id}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -203,7 +198,7 @@ class OnboardSimulation extends BaseSimulation {
   private val setSerieAndNumber: ScenarioBuilder = scenario("Put serie and number")
     .exec(
       http("Put serie and number")
-        .put("/documents/${id}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -232,7 +227,7 @@ class OnboardSimulation extends BaseSimulation {
   private val setIssuerDate: ScenarioBuilder = scenario("Put issuerDate")
     .exec(
       http("Put issuerDate")
-        .put("/documents/${id}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -266,7 +261,7 @@ class OnboardSimulation extends BaseSimulation {
   private val setIssuer: ScenarioBuilder = scenario("Put issuer")
     .exec(
       http("Put issuer")
-        .put("/documents/${id}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -306,7 +301,7 @@ class OnboardSimulation extends BaseSimulation {
   private val initStep: ScenarioBuilder = scenario("Init step")
     .exec(
       http("Init step")
-        .put("documents/${docId}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -332,7 +327,7 @@ class OnboardSimulation extends BaseSimulation {
         .check(status.is(200))
     )
 
-  private val filterEmptyDistrict: ScenarioBuilder = scenario("Post empty district")
+  private val filterDistrict: ScenarioBuilder = scenario("Post empty district")
     .exec(
       http("Post empty district")
         .post("/registers/keys/410/records/filter?strict=true&limit=1000&control=documents.${docId}.address.district")
@@ -346,7 +341,7 @@ class OnboardSimulation extends BaseSimulation {
         .check(status.is(200))
     )
 
-  private val filterEmptyCity: ScenarioBuilder = scenario("Post empty city")
+  private val filterCity: ScenarioBuilder = scenario("Post empty city")
     .exec(
       http("Post empty city")
         .post("/registers/keys/411/records/filter?strict=true&limit=1000&control=documents.${docId}.address.city")
@@ -363,7 +358,7 @@ class OnboardSimulation extends BaseSimulation {
   private val setCityFalse: ScenarioBuilder = scenario("Put city false")
     .exec(
       http("Put city false")
-        .put("documents/${docId}")
+        .put("/documents/${docId}")
         .headers(
           Map(
             "token" -> token,
@@ -381,6 +376,184 @@ class OnboardSimulation extends BaseSimulation {
             | ]
             |}
             |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val setRegion: ScenarioBuilder = scenario("Put region data")
+    .exec(
+      http("Put region data")
+        .put("/documents/${docId}")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody(
+          """
+            |{
+            | "properties":[
+            | {
+            |   "path":"address.region",
+            |   "value":{
+            |     "id":"4464e970-0fb6-11ea-b75b-9375609372d6",
+            |     "registerId":164,
+            |     "keyId":408,
+            |     "stringified":"м.Київ",
+            |     "isRelationId":"26",
+            |     "atuId":"26",
+            |     "atuNameId":"98419",
+            |     "isRelationLink":"",
+            |     "atuParentId":"",
+            |     "level":"1",
+            |     "type":"1",
+            |     "status":"1",
+            |     "code":"8000000000",
+            |     "cvk":"",
+            |     "name":"м.Київ"
+            |     }
+            |   }
+            | ]
+            |}
+            |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val setDistrict: ScenarioBuilder = scenario("Put district data")
+    .exec(
+      http("Put district data")
+        .put("/documents/${docId}")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody(
+          """
+            |{
+            |"properties":[
+            | {
+            |   "path":"address.district",
+            |   "value":{
+            |     "id":"896b5a40-0fb6-11ea-b75b-9375609372d6",
+            |     "registerId":164,
+            |     "keyId":410,
+            |     "stringified":" Голосіївський",
+            |     "isRelationId":"716",
+            |     "atuId":"716",
+            |     "atuNameId":"82329",
+            |     "isRelationLink":"26",
+            |     "atuParentId":"26",
+            |     "level":"2",
+            |     "type":"2",
+            |     "status":"1",
+            |     "code":"8036100000",
+            |     "cvk":"",
+            |     "name":"Голосіївський"
+            |     }
+            |   }
+            | ]
+            |}
+            |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val setStreetType: ScenarioBuilder = scenario("Put street type")
+    .exec(
+      http("Put street type")
+        .put("/documents/${docId}")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody(
+          """
+            |{
+            | "properties":[
+            |   {
+            |   "path":"address.street.streetType",
+            |   "value":"вулиця"
+            |   }
+            | ]
+            |}
+            |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val setStreetName: ScenarioBuilder = scenario("Put street name")
+    .exec(
+      http("Put street name")
+        .put("/documents/${docId}")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody(
+          """
+            |{
+            | "properties":[
+            | {
+            |   "path":"address.street.streetName",
+            |   "value":"Хмельницька"
+            |   }
+            | ]
+            |}
+            |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val setAddress: ScenarioBuilder = scenario("Put address")
+    .exec(
+      http("Put address")
+        .put("/documents/${docId}")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody(
+          """
+            |{
+            | "properties":[
+            |   {
+            |     "path":"address.building.building",
+            |     "value":"10"
+            |   },
+            |   {
+            |     "path":"address.building.index",
+            |     "value":"12345"
+            |   },
+            |   {
+            |     "path":"address.apt.index",
+            |     "value":"12345"
+            |   },
+            |   {
+            |     "path":"address.isPrivateHouse",
+            |     "value":["приватний будинок"]
+            |   }
+            | ]
+            |}
+            |""".stripMargin))
+        .check(status.is(200))
+    )
+
+  private val commit: ScenarioBuilder = scenario("Commit")
+    .exec(
+      http("Commit")
+        .post("/tasks/${taskId}/commit")
+        .headers(
+          Map(
+            "token" -> token,
+            "Content-Type" -> "application/json"
+          )
+        )
+        .body(StringBody("{}"))
         .check(status.is(200))
     )
 
@@ -458,8 +631,54 @@ class OnboardSimulation extends BaseSimulation {
   POST /registers/keys/411/records/filter?strict=true&limit=1000&control=documents.{id}.address.city - filter empty city
   PUT /documents/{id} - set city=false
   PUT /documents/{id} - set city=false
-  POST /registers/keys/408/records/filter?strict=true&limit=1000&control=documents.{id}.address.region - get regions
-  POST /registers/keys/410/records/filter?strict=true&limit=1000&control=documents.{id}.address.district - filter empty district
-  POST /registers/keys/411/records/filter?strict=true&limit=1000&control=documents.{id}.address.city - filter empty city
+  PUT /documents/{id} - set region
+  POST /registers/keys/410/records/filter?strict=true&limit=1000&control=documents.{id}.address.district - filter district
+  POST /registers/keys/411/records/filter?strict=true&limit=1000&control=documents.{id}.address.city - filter city
+  PUT /documents/{id} - set district
+  POST /registers/keys/411/records/filter?strict=true&limit=1000&control=documents.{id}.address.city - filter city
+  GET /tasks/{id}
+  PUT /documents/{id} - set street type
+  PUT /documents/{id} - set street name
+  PUT /documents/{id} - set address
+  POST commit
    */
+
+  private val script: ScenarioBuilder = scenario("Scenario")
+    .exec(postOnboard)
+    .exec(getOnboardTask)
+    .exec(putMetaOnboard)
+    .exec(getOnboardTask)
+    .exec(checkEmail)
+    .exec(clearEmailConfirmation)
+    .exec(clearPhoneConfirmation)
+    .exec(postEBabyAdmin)
+    .exec(setActivePassportTab)
+    .exec(setSerieAndNumber)
+    .exec(setIssuerDate)
+    .exec(setIssuer)
+    .exec(filterRegion)
+    .exec(initStep)
+    .exec(filterDistrict)
+    .exec(filterCity)
+    .exec(setCityFalse)
+    .exec(setCityFalse)
+    .exec(setRegion)
+    .exec(filterDistrict)
+    .exec(filterCity)
+    .exec(setDistrict)
+    .exec(filterCity)
+    .exec(getOnboardTask)
+    .exec(setStreetType)
+    .exec(setStreetName)
+    .exec(setAddress)
+    //.exec(commit) Not work when onboard post after registration
+
+  setUp(
+    script.inject(atOnceUsers(sessions.toInt)).throttle(
+
+      reachRps(rps.toInt) in (1 seconds),
+      holdFor(1 hour)
+    ),
+  ).protocols(httpConf).maxDuration(1 hour)
+    .assertions(global.successfulRequests.percent.gt(95))
 }
