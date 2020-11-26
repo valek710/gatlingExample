@@ -6,12 +6,22 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 import scala.concurrent.duration.DurationInt
 
 class BaseSimulation extends Simulation {
+
+  //variables for tests
   protected val token: String = System.getProperty("TOKEN")
   protected val url: String = System.getProperty("URL")
   protected val idUrl: String = System.getProperty("ID_URL")
   protected val rps: String = System.getProperty("RPS")
   protected val sessions: String = System.getProperty("SESSIONS")
 
+  /***
+   * http configuration
+   * baseUrl(url) - set base url, used in requests when not use https://
+   * acceptHeader - accepted response headers
+   * acceptLanguageHeader - optional
+   * acceptEncodingHeader - optional
+   * userAgentHeader - firewall can block requests without userAgent
+   */
   protected val httpConf: HttpProtocolBuilder = http
     .baseUrl(url)
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
