@@ -369,7 +369,6 @@ class OnboardSimulation extends BaseSimulation {
             "Content-Type" -> "application/json"
           )
         )
-        .body(StringBody("{}"))
         .check(status.is(200))
     )
 
@@ -716,7 +715,7 @@ class OnboardSimulation extends BaseSimulation {
    * assertions - optional, can assert percent of successful responses, max response time etc
    */
   setUp(
-    checkEmail.inject(atOnceUsers(sessions.toInt)).throttle(
+    script.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),
