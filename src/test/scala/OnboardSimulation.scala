@@ -12,12 +12,16 @@ class OnboardSimulation extends BaseSimulation {
 
   /**
    * http = name for request in report, if in scenario > 1 request - in report we see scenario name and list of requests names
+   *
    * header/headers - can be two string (if header) or map (if headers). Can use variables (token) or scenario variables (${token})
+   *
    * method - post, get, put, delete etc. If not use https - used baseUri
+   *
    * body - optional, can use """ for string when need ecranisation. Can use scenario variables - ${taskId}
+   *
    * check(status.is(200)) - assert statusCode 200, if not 200 request be failed
+   *
    * check(jsonPath("$.data.id").saveAs("taskId") - assert variable in response, if variable not found request be failed. If variable found - save value with name "taskId"
-   * )
    */
   private val postOnboard: ScenarioBuilder = scenario("Post onboard")
     .exec(
@@ -696,17 +700,23 @@ class OnboardSimulation extends BaseSimulation {
 
   /**
    * setUp block - configuration for scenario: rps, requests, maxDuration, maxRequests etc
+   *
    * script.inject(atOnceUsers(sessions.toInt)) - use my script, inject all sessions(users) when start script, get count sessions from variable, must be Integer
+   *
    * reachRps(rps.toInt) in (1 seconds) - up to rps (get from variable, must be Integer) after 1 sec
+   *
    * holdFor(1 hour) - hold this rps 1 hour
+   *
    * block throttle can be repeat
+   *
    * protocols - use my default http configuration
+   *
    * maxDuration - after 1 hour if all sessions not end script be stoped
+   *
    * assertions - optional, can assert percent of successful responses, max response time etc
    */
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
-
+    checkEmail.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),
