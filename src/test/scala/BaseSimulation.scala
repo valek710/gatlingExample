@@ -1,11 +1,9 @@
-import io.gatling.core.Predef.{holdFor, _}
+import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 
-import scala.concurrent.duration.DurationInt
-
-class BaseSimulation extends Simulation {
+protected class BaseSimulation extends Simulation {
 
   //variables for tests
   protected val token: String = System.getProperty("TOKEN")
