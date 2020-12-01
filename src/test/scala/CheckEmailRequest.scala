@@ -9,7 +9,7 @@ class CheckEmailRequest extends BaseSimulation {
   val checkEmail: ScenarioBuilder = baseRequest.postRequest("Check email", "/users/email/check", token,
     """
       |{
-      |"email":"v.kostromin@kitsoft.kiev.ua"
+      |"email":"v.kostromin123@kitsoft.kiev.ua"
       |}
       |""".stripMargin
   )
