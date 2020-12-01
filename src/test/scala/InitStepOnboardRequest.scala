@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class InitStepOnboardRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val initStep: ScenarioBuilder = baseRequest.putRequest("Init step", "/documents/${docId}", token,
     """
@@ -25,12 +24,26 @@ class InitStepOnboardRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(initStep)
+  val initStep1: ScenarioBuilder = baseRequest.putRequest("Init step", "/documents/" + docId, token,
+    """
+      |{
+      | "properties":[
+      |   {
+      |   "path":"address",
+      |   "value":
+      |     {
+      |     "street":{},
+      |     "building":{},
+      |     "apt":{}
+      |     }
+      |   }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    initStep1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

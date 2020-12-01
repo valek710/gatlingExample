@@ -1,12 +1,10 @@
 import io.gatling.core.Predef.{holdFor, _}
 import io.gatling.core.structure.ScenarioBuilder
-import io.gatling.http.Predef.{http, status}
 
 import scala.concurrent.duration.DurationInt
 
 class PutMetaOnboardRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val putMetaOnboard: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
     "/tasks/${taskId}/meta", token,
@@ -19,12 +17,19 @@ class PutMetaOnboardRequest extends BaseSimulation {
       """.stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(putMetaOnboard)
+  val putMetaOnboard1: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
+    "/tasks/" + onboardId + "/meta", token,
+    """
+      |{
+      |"meta":{
+      |   "isRead":true
+      |   }
+      | }
+      """.stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    putMetaOnboard1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

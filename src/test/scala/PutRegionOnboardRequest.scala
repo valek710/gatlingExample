@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class PutRegionOnboardRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val setRegion: ScenarioBuilder = baseRequest.putRequest("Put region data", "/documents/${docId}", token,
     """
@@ -36,12 +35,37 @@ class PutRegionOnboardRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(setRegion)
+  val setRegion1: ScenarioBuilder = baseRequest.putRequest("Put region data", "/documents/" + docId, token,
+    """
+      |{
+      | "properties":[
+      | {
+      |   "path":"address.region",
+      |   "value":{
+      |     "id":"4464e970-0fb6-11ea-b75b-9375609372d6",
+      |     "registerId":164,
+      |     "keyId":408,
+      |     "stringified":"м.Київ",
+      |     "isRelationId":"26",
+      |     "atuId":"26",
+      |     "atuNameId":"98419",
+      |     "isRelationLink":"",
+      |     "atuParentId":"",
+      |     "level":"1",
+      |     "type":"1",
+      |     "status":"1",
+      |     "code":"8000000000",
+      |     "cvk":"",
+      |     "name":"м.Київ"
+      |     }
+      |   }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    setRegion1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

@@ -5,7 +5,19 @@ import scala.concurrent.duration.DurationInt
 
 class ClearPhoneConfirmationRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
+
+  val clearPhoneConfirmation1: ScenarioBuilder = baseRequest.putRequest("Clear phone confirmation", "/documents/" + docId, token,
+    """
+      |{
+      |"properties":[
+      | {
+      | "path":"phoneConfirmation.confirmation",
+      | "previousValue":null
+      | }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   val clearPhoneConfirmation: ScenarioBuilder = baseRequest.putRequest("Clear phone confirmation", "/documents/${docId}", token,
     """
@@ -20,12 +32,8 @@ class ClearPhoneConfirmationRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(clearPhoneConfirmation)
-
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    clearPhoneConfirmation1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

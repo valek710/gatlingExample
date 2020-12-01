@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class PutStreetTypeOnboardRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val setStreetType: ScenarioBuilder = baseRequest.putRequest("Put street type", "/documents/${docId}", token,
     """
@@ -20,12 +19,21 @@ class PutStreetTypeOnboardRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(setStreetType)
+  val setStreetType1: ScenarioBuilder = baseRequest.putRequest("Put street type", "/documents/" + docId, token,
+    """
+      |{
+      | "properties":[
+      |   {
+      |   "path":"address.street.streetType",
+      |   "value":"вулиця"
+      |   }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    setStreetType1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

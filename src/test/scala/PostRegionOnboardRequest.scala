@@ -5,17 +5,16 @@ import scala.concurrent.duration.DurationInt
 
 class PostRegionOnboardRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val filterRegion: ScenarioBuilder = baseRequest.postRequest("Post region",
     "/registers/keys/408/records/filter?strict=true&limit=1000&control=documents.${docId}.address.region", token, "{}")
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(filterRegion)
+  val filterRegion1: ScenarioBuilder = baseRequest.postRequest("Post region",
+    "/registers/keys/408/records/filter?strict=true&limit=1000&control=documents." + docId + ".address.region", token, "{}")
+
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    filterRegion1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

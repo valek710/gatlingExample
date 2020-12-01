@@ -5,17 +5,16 @@ import scala.concurrent.duration.DurationInt
 
 class PostEBabyAdminRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val postEBabyAdmin: ScenarioBuilder = baseRequest.postRequest("Post eBaby admin",
     "/registers/keys/427/records/filter?strict=true&limit=1000&control=documents.${docId}.applicant.eBabyAdminRegistry", token, "{}")
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(postEBabyAdmin)
+  val postEBabyAdmin1: ScenarioBuilder = baseRequest.postRequest("Post eBaby admin",
+    "/registers/keys/427/records/filter?strict=true&limit=1000&control=documents." + docId + ".applicant.eBabyAdminRegistry", token, "{}")
+
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    postEBabyAdmin1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

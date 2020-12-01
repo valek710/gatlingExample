@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class PutSerieAndNumberRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val setSerieAndNumber: ScenarioBuilder = baseRequest.putRequest("Put serie and number", "/documents/${docId}", token,
     """
@@ -23,12 +22,24 @@ class PutSerieAndNumberRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(setSerieAndNumber)
+  val setSerieAndNumber1: ScenarioBuilder = baseRequest.putRequest("Put serie and number", "/documents/" + docId, token,
+    """
+      |{
+      | "properties":[
+      |   {"path":"pasport.tabs.passport.pasNumber.serie",
+      |   "value":"ЕН"
+      |   },
+      |   {
+      |   "path":"pasport.tabs.passport.pasNumber.number",
+      |   "value":"123456"
+      |   }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    setSerieAndNumber1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

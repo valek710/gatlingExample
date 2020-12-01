@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class PutActivePassportTabRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val setActivePassportTab: ScenarioBuilder = baseRequest.putRequest("Put active passport tab", "/documents/${docId}", token,
     """
@@ -27,12 +26,30 @@ class PutActivePassportTabRequest extends BaseSimulation {
       |}
       |""".stripMargin
   )
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(setActivePassportTab)
+
+  val setActivePassportTab1: ScenarioBuilder = baseRequest.putRequest("Put active passport tab", "/documents/" + docId, token,
+    """
+      |{
+      |"properties":[
+      | {
+      |   "path":"pasport",
+      |   "value":{
+      |     "tabs":{
+      |       "active":"passport",
+      |       "passport":{
+      |         "pasNumber":{},
+      |         "date":{}
+      |       }
+      |     }
+      |   }
+      | }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    setActivePassportTab1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

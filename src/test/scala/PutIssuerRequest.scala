@@ -5,7 +5,6 @@ import scala.concurrent.duration.DurationInt
 
 class PutIssuerRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
-  def postOnboardRequest: PostOnboardRequest = new PostOnboardRequest()
 
   val setIssuer: ScenarioBuilder = baseRequest.putRequest("Put issuer", "/documents/${docId}", token,
     """
@@ -20,12 +19,21 @@ class PutIssuerRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(postOnboardRequest.postOnboard)
-    .exec(setIssuer)
+  val setIssuer1: ScenarioBuilder = baseRequest.putRequest("Put issuer", "/documents/" + docId, token,
+    """
+      |{
+      | "properties":[
+      |   {
+      |   "path":"pasport.tabs.passport.pasIssurer",
+      |   "value":"Рокитнянським РВ ГУ МВС України в Київській області"
+      |   }
+      | ]
+      |}
+      |""".stripMargin
+  )
 
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    setIssuer1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),
