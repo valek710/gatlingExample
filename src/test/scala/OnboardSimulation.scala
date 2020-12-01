@@ -175,7 +175,10 @@ class OnboardSimulation extends BaseSimulation {
    * assertions - optional, can assert percent of successful responses, max response time etc
    */
   setUp(
-    script.inject(atOnceUsers(sessions.toInt)).throttle(
+    script.inject(atOnceUsers(
+      sessions.toInt % 2),
+      rampUsers(sessions.toInt % 2) during(5 second)
+    ).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),
