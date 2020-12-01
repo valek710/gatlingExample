@@ -6,7 +6,7 @@ import scala.concurrent.duration.DurationInt
 class ClearEmailConfirmationRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
 
-  val clearEmailConfirmation: ScenarioBuilder = baseRequest.putRequest("Clear email confirmation", "/documents/" + docId, token,
+  val clearEmailConfirmation1: ScenarioBuilder = baseRequest.putRequest("Clear email confirmation", "/documents/" + docId, token,
     """
       |{
       |"properties":[
@@ -19,7 +19,7 @@ class ClearEmailConfirmationRequest extends BaseSimulation {
       |""".stripMargin
   )
 
-  val clearEmailConfirmation1: ScenarioBuilder = baseRequest.putRequest("Clear email confirmation", "/documents/${docId}", token,
+  val clearEmailConfirmation: ScenarioBuilder = baseRequest.putRequest("Clear email confirmation", "/documents/${docId}", token,
     """
       |{
       |"properties":[
