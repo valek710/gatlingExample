@@ -18,38 +18,6 @@ class AuthSimulation extends BaseSimulation {
         .check(status.is(200))
     )
 
-  private val userCheckAuthInfo: ScenarioBuilder = scenario("User get auth/me ")
-    .exec(
-      http("get /auth/me")
-        .get("/auth/me")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnits: ScenarioBuilder = scenario("User get units ")
-    .exec(
-      http("get /units")
-        .get("/units")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetInboxesUnread: ScenarioBuilder = scenario("User get /user-inboxes/unread/count")
-    .exec(
-      http("get /user-inboxes/unread/count")
-        .get("/user-inboxes/unread/count")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnreadMess: ScenarioBuilder = scenario("User get unread messages")
-    .exec(
-      http("get /messages/count-unread")
-        .get("/messages/count-unread")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
   /* GET /authorise/eds/sign
     POST /authorise/eds
     GET /auth

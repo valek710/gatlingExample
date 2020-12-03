@@ -13,6 +13,10 @@ protected class BaseSimulation extends Simulation {
   protected val sessions: String = System.getProperty("SESSIONS")
   protected val onboardId: String = System.getProperty("ONBOARD_ID")
   protected val docId: String = System.getProperty("DOC_ID")
+  protected val workflowId: String = System.getProperty("WORKFLOW_ID")
+  protected val workflowTemplateId: String = System.getProperty("WORKFLOW_TEMPLATE_ID")
+  protected val draftId: String = System.getProperty("DRAFT_ID")
+  protected val documentTemplateId: String = System.getProperty("DOCUMENT_TEMPLATE_ID")
 
   /***
    * http configuration
@@ -29,14 +33,6 @@ protected class BaseSimulation extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
-
-  private val userGetMessages: ScenarioBuilder = scenario("User get messages")
-    .exec(
-      http("get /messages")
-        .get("/messages")
-        .header("token", token)
-        .check(status.is(200))
-    )
 
   private val userGetWorkflows10: ScenarioBuilder = scenario("User get workflows with pagination 10")
     .exec(
@@ -66,70 +62,6 @@ protected class BaseSimulation extends Simulation {
     .exec(
       http("get drafts with pagination 50")
         .get("/workflows?filters%5Btasks%5D%5Bdeleted%5D=0&filters%5Bis_draft%5D=true&filters%5Bfiltered%5D=false&sort%5Bdocuments%5D%5Bupdated_at%5D=desc&count=50")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnitTasks10: ScenarioBuilder = scenario("User get unit tasks with pagination 10")
-    .exec(
-      http("get unit tasks with pagination 10")
-        .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=10")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetUnitTasks50: ScenarioBuilder = scenario("User get unit tasks with pagination 50")
-    .exec(
-      http("get unit tasks with pagination 50")
-        .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=50")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetArchivedUnitTasks10: ScenarioBuilder = scenario("User get archived unit tasks with pagination 10")
-    .exec(
-      http("get archived unit tasks with pagination 10")
-        .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=10")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetArchivedUnitTasks50: ScenarioBuilder = scenario("User get archived unit tasks with pagination 50")
-    .exec(
-      http("get archived unit tasks with pagination 50")
-        .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=unit&filters%5Bfiltered%5D=false&count=50")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetTasks10: ScenarioBuilder = scenario("User get tasks with pagination 10")
-    .exec(
-      http("get /tasks with pagination 10")
-        .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=10")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetTasks50: ScenarioBuilder = scenario("User get tasks with pagination 50")
-    .exec(
-      http("get /tasks with pagination 50")
-        .get("/tasks?filters%5Bfinished%5D=0&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=50")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetArchivedTasks10: ScenarioBuilder = scenario("User get archived tasks with pagination 10")
-    .exec(
-      http("get archived tasks with pagination 10")
-        .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=10")
-        .header("token", token)
-        .check(status.is(200))
-    )
-
-  private val userGetArchivedTasks50: ScenarioBuilder = scenario("User get archived tasks with pagination 50")
-    .exec(
-      http("get archived tasks with pagination 50")
-        .get("/tasks?filters%5Bfinished%5D=1&filters%5Bdeleted%5D=0&filters%5Bassigned_to%5D=me&filters%5Bfiltered%5D=false&count=50")
         .header("token", token)
         .check(status.is(200))
     )
