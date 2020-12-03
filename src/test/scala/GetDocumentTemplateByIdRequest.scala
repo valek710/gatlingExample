@@ -7,7 +7,7 @@ class GetDocumentTemplateByIdRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest();
 
   val getDraft: ScenarioBuilder = baseRequest.getRequest("Get document-template",
-    "/document-templates/3006", token)
+    "/document-templates/3006001", token)
 
   val getDraft1: ScenarioBuilder = baseRequest.getRequest("Get document-template",
     "/document-templates/" + documentTemplateId, token)
