@@ -47,6 +47,6 @@ class PostFinHelpClaim extends BaseSimulation {
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),
-  ).protocols(httpConf).maxDuration(10 hour)
+  ).protocols(httpConf).maxDuration(60 hour)
     .assertions(global.successfulRequests.percent.gt(95))
 }
