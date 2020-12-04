@@ -44,7 +44,7 @@
                         <compilerJvmArg>-Xmx512m</compilerJvmArg>
                     </compilerJvmArgs>
                     <jvmArgs>
-                        <jvmArg>-Xmx16g</jvmArg>
+                        <jvmArg>-Xmx12g</jvmArg>
                     </jvmArgs>
                 </configuration>
             </plugin>
