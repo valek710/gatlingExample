@@ -34,7 +34,7 @@ protected class BaseSimulation extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
 
-  private val userGetWorkflows10: ScenarioBuilder = scenario("User get workflows with pagination 10")
+  /*private val userGetWorkflows10: ScenarioBuilder = scenario("User get workflows with pagination 10")
     .exec(
       http("get /workflows with pagination 10")
         .get("/workflows?filters%5Btasks.deleted%5D=0&filters%5Bis_draft%5D=false&filters%5Bfiltered%5D=false&sort%5Btasks%5D%5Bfinished_at%5D=desc&count=10")
@@ -111,7 +111,7 @@ protected class BaseSimulation extends Simulation {
             )
           )
           .check(status.is(200))
-      )
+      )*/
 
   /*val test: ScenarioBuilder = scenario("test")
     .exec(userAuth).pause(1).exec(userCheckAuthInfo)
