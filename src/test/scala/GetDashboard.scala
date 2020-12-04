@@ -5,9 +5,14 @@ import io.gatling.http.Predef._
 import scala.concurrent.duration.DurationInt
 
 class GetDashboard extends BaseSimulation {
-  def baseRequest: BaseRequest = new BaseRequest();
+  def baseRequest: BaseRequest = new BaseRequest()
+  def randomData: RandomData = new RandomData()
+
 
   val getDashboard: ScenarioBuilder = scenario("Get dashboard")
+    .exec(
+      _.set("ipn", randomData.randomDigit(1000000000, 9999999999L))
+    )
     .exec(
       http("Get dashboard")
         .post("/diia-mobile-app/fin-help/get-dashboard")
@@ -21,12 +26,12 @@ class GetDashboard extends BaseSimulation {
           StringBody(
             """
               |{
-              |    "rnokpp": "3186405475"
+              |    "rnokpp": "${ipn}"
               |}
               |""".stripMargin
           )
         )
-        .check(status.is(200))
+        .check(status.not(500))
     )
 
   setUp(
