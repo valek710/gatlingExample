@@ -41,7 +41,7 @@
                 <version>${gatling-maven-plugin.version}</version>
                 <configuration>
                     <compilerJvmArgs>
-                        <compilerJvmArg>-Xmx16g</compilerJvmArg>
+                        <compilerJvmArg>-Xmx512m</compilerJvmArg>
                     </compilerJvmArgs>
                     <jvmArgs>
                         <jvmArg>-Xmx16g</jvmArg>
