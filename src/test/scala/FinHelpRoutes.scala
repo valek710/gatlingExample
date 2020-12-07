@@ -9,15 +9,39 @@ class FinHelpRoutes extends BaseSimulation {
   def postFinHelpClaim: PostFinHelpClaim = new PostFinHelpClaim()
   def finHelpGetStatus: FinHelpGetStatus = new FinHelpGetStatus()
 
-  private val script: ScenarioBuilder = scenario("Scenario")
-    .exec(getDashboard.getDashboard)
-    .exec(postFinHelpClaim.postFinHelp)
-    .exec(finHelpGetStatus.getStatus)
+  private val rps1: Integer = rps.toInt / 5 * 2
+  private val rps2: Integer = rps.toInt / 5
+  private val ses1: Integer = sessions.toInt / 5 * 2
+  private val ses2: Integer = sessions.toInt / 5 * 2
+
+  private val getDashboard1: ScenarioBuilder = scenario("Get dashboard")
+    .exec(
+      getDashboard.getDashboard
+    )
+
+  private val postFinHelp1: ScenarioBuilder = scenario("postFinHelp")
+    .exec(
+      postFinHelpClaim.postFinHelp
+    )
+
+  private val getStatus1: ScenarioBuilder = scenario("getStatus")
+    .exec(
+      finHelpGetStatus.getStatus
+    )
 
   setUp(
-    script.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
-      reachRps(rps.toInt) in (20 seconds),
+    getDashboard1.inject(atOnceUsers(ses1)).throttle(
+      reachRps(rps1) in (1 seconds),
+      holdFor(1 hour)
+    ),
+    postFinHelp1.inject(atOnceUsers(ses2)).throttle(
+      reachRps(rps2) in (1 seconds),
+      holdFor(1 hour)
+    ),
+    getStatus1.inject(atOnceUsers(ses1)).throttle(
+      reachRps(rps1) in (1 seconds),
       holdFor(1 hour)
     ),
   ).protocols(httpConf).maxDuration(1 hour)
+    .assertions(global.successfulRequests.percent.gt(95))
 }
