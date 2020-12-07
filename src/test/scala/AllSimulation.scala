@@ -18,15 +18,15 @@ class AllSimulation extends BaseSimulation {
       reachRps(rps.toInt / 4) in (20 seconds),
       holdFor(1 hour)
     ),
-    finHelpRoutes.getDashboard1.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
+    finHelpRoutes.getDashboard1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
       reachRps(rps.toInt / 4) in (1 seconds),
       holdFor(1 hour)
     ),
-    finHelpRoutes.postFinHelp1.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
+    finHelpRoutes.postFinHelp1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
       reachRps(rps.toInt / 6) in (1 seconds),
       holdFor(1 hour)
     ),
-    finHelpRoutes.getStatus1.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
+    finHelpRoutes.getStatus1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
       reachRps(rps.toInt / 4) in (1 seconds),
       holdFor(1 hour)
     ),
