@@ -126,7 +126,7 @@ class OnboardSimulation extends BaseSimulation {
   /**
    * I use this scenario for launch chain of requests
    */
-  private val script: ScenarioBuilder = scenario("Scenario")
+  val script: ScenarioBuilder = scenario("Scenario")
     .exec(postOnboard.postOnboard)
     .exec(getOnboardTask.getOnboardTask)
     .exec(putMetaOnboard.putMetaOnboard)

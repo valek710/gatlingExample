@@ -25,7 +25,7 @@ class CabinetSimulation extends BaseSimulation {
   def unitTasksWithFilterRequest: UnitTasksWithFilterRequest = new UnitTasksWithFilterRequest()
 
 
-  private val script: ScenarioBuilder = scenario("Scenario")
+  val script: ScenarioBuilder = scenario("Scenario")
     .exec(authMeRequest.authMe)
     .exec(getDocumentTemplateRequest.getDocumentTemplates)
     .exec(getDraftsRequest.getDrafts)

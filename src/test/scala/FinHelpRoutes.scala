@@ -14,17 +14,17 @@ class FinHelpRoutes extends BaseSimulation {
   private val ses1: Integer = sessions.toInt / 5 * 2
   private val ses2: Integer = sessions.toInt / 5 * 2
 
-  private val getDashboard1: ScenarioBuilder = scenario("Get dashboard")
+  val getDashboard1: ScenarioBuilder = scenario("Get dashboard")
     .exec(
       getDashboard.getDashboard
     )
 
-  private val postFinHelp1: ScenarioBuilder = scenario("postFinHelp")
+  val postFinHelp1: ScenarioBuilder = scenario("postFinHelp")
     .exec(
       postFinHelpClaim.postFinHelp
     )
 
-  private val getStatus1: ScenarioBuilder = scenario("getStatus")
+  val getStatus1: ScenarioBuilder = scenario("getStatus")
     .exec(
       finHelpGetStatus.getStatus
     )
