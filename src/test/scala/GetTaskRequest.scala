@@ -3,12 +3,12 @@ import io.gatling.core.structure.ScenarioBuilder
 
 import scala.concurrent.duration.DurationInt
 
-class GetOnboardRequest extends BaseSimulation {
+class GetTaskRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
 
-  val getOnboardTask: ScenarioBuilder = baseRequest.getRequest("Get onboard task", "/tasks/${taskId}", token)
+  val getTask: ScenarioBuilder = baseRequest.getRequest("Get onboard task", "/tasks/${taskId}", token)
 
-  val getOnboardTask1: ScenarioBuilder = baseRequest.getRequest("Get onboard task", "/tasks/" + onboardId, token)
+  val getTask1: ScenarioBuilder = baseRequest.getRequest("Get onboard task", "/tasks/" + taskId, token)
 
   setUp(
     getOnboardTask1.inject(atOnceUsers(sessions.toInt)).throttle(

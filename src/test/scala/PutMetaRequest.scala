@@ -3,10 +3,10 @@ import io.gatling.core.structure.ScenarioBuilder
 
 import scala.concurrent.duration.DurationInt
 
-class PutMetaOnboardRequest extends BaseSimulation {
+class PutMetaRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
 
-  val putMetaOnboard: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
+  val putMeta: ScenarioBuilder = baseRequest.putRequest("Put meta",
     "/tasks/${taskId}/meta", token,
     """
       |{
@@ -17,8 +17,8 @@ class PutMetaOnboardRequest extends BaseSimulation {
       """.stripMargin
   )
 
-  val putMetaOnboard1: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
-    "/tasks/" + onboardId + "/meta", token,
+  val putMeta1: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
+    "/tasks/" + taskId + "/meta", token,
     """
       |{
       |"meta":{
@@ -29,7 +29,7 @@ class PutMetaOnboardRequest extends BaseSimulation {
   )
 
   setUp(
-    putMetaOnboard1.inject(atOnceUsers(sessions.toInt)).throttle(
+    putMeta1.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

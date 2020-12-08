@@ -11,7 +11,7 @@ protected class BaseSimulation extends Simulation {
   protected val idUrl: String = System.getProperty("ID_URL")
   protected val rps: String = System.getProperty("RPS")
   protected val sessions: String = System.getProperty("SESSIONS")
-  protected val onboardId: String = System.getProperty("ONBOARD_ID")
+  protected val taskId: String = System.getProperty("ONBOARD_ID")
   protected val docId: String = System.getProperty("DOC_ID")
   protected val workflowId: String = System.getProperty("WORKFLOW_ID")
   protected val workflowTemplateId: String = System.getProperty("WORKFLOW_TEMPLATE_ID")
