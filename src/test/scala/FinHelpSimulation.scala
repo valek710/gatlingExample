@@ -13,14 +13,16 @@ class FinHelpSimulation extends BaseSimulation {
   def postFinPaymentRequest: PostFinPaymentRequest = new PostFinPaymentRequest()
   def putSecondStepDefaultValuesFinHelpRequest: PutSecondStepDefaultValuesFinHelpRequest = new PutSecondStepDefaultValuesFinHelpRequest()
   def putEmptyWorkplaceFinHelpRequest: PutEmptyWorkplaceFinHelpRequest = new PutEmptyWorkplaceFinHelpRequest()
-  def putWorkNowFinHelpRequest: PutWorkNowFinHelpRequest = new putWorkNowFinHelpRequest()
+  def putWorkNowFinHelpRequest: PutWorkNowFinHelpRequest = new PutWorkNowFinHelpRequest()
   def putWorkplaceAcceptFinHelpRequest: PutWorkplaceAcceptFinHelpRequest = new PutWorkplaceAcceptFinHelpRequest()
   def postFinPaymentFourthStepRequest: PostFinPaymentFourthStepRequest = new PostFinPaymentFourthStepRequest()
-
-
-
-
-
+  def putIBANDefaultFinHelpRequest: PutIBANDefaultFinHelpRequest = new PutIBANDefaultFinHelpRequest()
+  def putIBANFinHelpRequest: PutIBANFinHelpRequest = new PutIBANFinHelpRequest()
+  def postValidateRequest: PostValidateRequest = new PostValidateRequest()
+  def postPDFRequest: PostPDFRequest = new PostPDFRequest()
+  def getPDFRequest: GetPDFRequest = new GetPDFRequest()
+  def getDocumentRequest: GetDocumentRequest = new GetDocumentRequest()
+  def postCommitRequest: PostCommitRequest = new PostCommitRequest()
 
 
   val script: ScenarioBuilder = scenario("FinHelpSimulation")
@@ -41,11 +43,20 @@ class FinHelpSimulation extends BaseSimulation {
     .exec(putWorkNowFinHelpRequest.putWorkNow)
     .exec(putWorkplaceAcceptFinHelpRequest.putAccept)
     .exec(postFinPaymentFourthStepRequest.postPayment)
-
-
-
-
-
+    .exec(postFinPaymentFourthStepRequest.postPayment)
+    .exec(getTaskRequest.getTask)
+    .exec(putIBANDefaultFinHelpRequest.putIBAN)
+    .exec(postFinPaymentFourthStepRequest.postPayment)
+    .exec(getTaskRequest.getTask)
+    .exec(putIBANFinHelpRequest.putIBAN)
+    .exec(postFinPaymentFourthStepRequest.postPayment)
+    .exec(getTaskRequest.getTask)
+    .exec(postValidateRequest.postValidate)
+    .exec(postPDFRequest.postPDF)
+    .exec(getTaskRequest.getTask)
+    .exec(getPDFRequest.getPDF)
+    .exec(getDocumentRequest.getDocument)
+    //.exec(postCommitRequest.postCommit)
 
 
   /*
@@ -67,22 +78,28 @@ class FinHelpSimulation extends BaseSimulation {
     put workNow = 1
     put accept = 0
     post payment 4 step - 71 key
+    post payment 4 step - 71 key
+    get task
+    put iban = UA
+    post payment 4 step - 71 key
+    get task
+    put iban
+    post payment 4 step - 71 key
+    get task
+    post validate
+    post PDF
+    get task
+    get PDF
+    get document
+    post commit
    */
 
 
   setUp(
-    getDashboard1.inject(atOnceUsers(ses1)).throttle(
-      reachRps(rps1) in (1 seconds),
+    script.inject(atOnceUsers(sessions.toInt)).throttle(
+      reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
-    ),
-    postFinHelp1.inject(atOnceUsers(ses2)).throttle(
-      reachRps(rps2) in (1 seconds),
-      holdFor(1 hour)
-    ),
-    getStatus1.inject(atOnceUsers(ses1)).throttle(
-      reachRps(rps1) in (1 seconds),
-      holdFor(1 hour)
-    ),
+    )
   ).protocols(httpConf).maxDuration(1 hour)
     .assertions(global.successfulRequests.percent.gt(95))
 }

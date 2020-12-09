@@ -3,15 +3,13 @@ import io.gatling.core.structure.ScenarioBuilder
 
 import scala.concurrent.duration.DurationInt
 
-class GetTaskRequest extends BaseSimulation {
+class GetPDFRequest extends BaseSimulation {
   def baseRequest: BaseRequest = new BaseRequest()
 
-  val getTask: ScenarioBuilder = baseRequest.getRequest("Get task", "/tasks/${taskId}", token)
-
-  val getTask1: ScenarioBuilder = baseRequest.getRequest("Get task", "/tasks/" + taskId, token)
+  val getPDF: ScenarioBuilder = baseRequest.getRequest("Get PDF", "/documents/${docId}/pdf", token)
 
   setUp(
-    getTask1.inject(atOnceUsers(sessions.toInt)).throttle(
+    getPDF.inject(atOnceUsers(sessions.toInt)).throttle(
       reachRps(rps.toInt) in (1 seconds),
       holdFor(1 hour)
     ),

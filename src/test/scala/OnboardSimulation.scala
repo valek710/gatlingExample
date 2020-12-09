@@ -9,7 +9,7 @@ class OnboardSimulation extends BaseSimulation {
   def checkPhone: CheckPhoneRequest = new CheckPhoneRequest()
   def postOnboard: PostOnboardRequest = new PostOnboardRequest()
   def putMetaRequest: PutMetaRequest = new PutMetaRequest()
-  def getOnboardTask: GetOnboardRequest = new GetOnboardRequest()
+  def getOnboardTask: GetTaskRequest = new GetTaskRequest()
   def clearEmailConfirmation: ClearEmailConfirmationRequest = new ClearEmailConfirmationRequest()
   def clearPhoneConfirmation: ClearPhoneConfirmationRequest = new ClearPhoneConfirmationRequest()
   def postEBabyAdmin: PostEBabyAdminRequest = new PostEBabyAdminRequest()
@@ -27,10 +27,6 @@ class OnboardSimulation extends BaseSimulation {
   def setStreetType: PutStreetTypeOnboardRequest = new PutStreetTypeOnboardRequest()
   def setStreetName: PutStreetNameOnboardRequest = new PutStreetNameOnboardRequest()
   def setAddress: PutAddressOnboardRequest = new PutAddressOnboardRequest()
-
-
-  val commit: ScenarioBuilder = baseRequest.postRequest("Commit",
-    "/tasks/${taskId}/commit", token, "{}")
 
 
   /**
@@ -128,9 +124,9 @@ class OnboardSimulation extends BaseSimulation {
    */
   val script: ScenarioBuilder = scenario("Onboard")
     .exec(postOnboard.postOnboard)
-    .exec(getOnboardTask.getOnboardTask)
-    .exec(putMetaOnboard.putMeta)
-    .exec(getOnboardTask.getOnboardTask)
+    .exec(getOnboardTask.getTask)
+    .exec(putMetaRequest.putMeta)
+    .exec(getOnboardTask.getTask)
     .exec(checkEmail.checkEmail)
     .exec(clearEmailConfirmation.clearEmailConfirmation)
     .exec(checkPhone.checkPhone)
@@ -151,7 +147,7 @@ class OnboardSimulation extends BaseSimulation {
     .exec(filterCity.filterCity)
     .exec(setDistrict.setDistrict)
     .exec(filterCity.filterCity)
-    .exec(getOnboardTask.getOnboardTask)
+    .exec(getOnboardTask.getTask)
     .exec(setStreetType.setStreetType)
     .exec(setStreetName.setStreetName)
     .exec(setAddress.setAddress)

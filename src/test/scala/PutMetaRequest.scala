@@ -17,7 +17,7 @@ class PutMetaRequest extends BaseSimulation {
       """.stripMargin
   )
 
-  val putMeta1: ScenarioBuilder = baseRequest.putRequest("Put meta onboard",
+  val putMeta1: ScenarioBuilder = baseRequest.putRequest("Put meta",
     "/tasks/" + taskId + "/meta", token,
     """
       |{
