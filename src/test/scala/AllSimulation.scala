@@ -31,7 +31,7 @@ class AllSimulation extends BaseSimulation {
       reachRps(rps.toInt / 6) in (1 seconds),
       holdFor(1 hour)
     ),
-    finHelpSimulation.script.inject(rampUsers(sessions.toInt * 20) during(20 second)).throttle(
+    finHelpSimulation.script.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
       reachRps(rps.toInt / 6) in (1 seconds),
       holdFor(1 hour)
     ),
