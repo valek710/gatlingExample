@@ -8,26 +8,31 @@ class AllSimulation extends BaseSimulation {
   def onboardSimulation: OnboardSimulation = new OnboardSimulation()
   def cabinetSimulation: CabinetSimulation = new CabinetSimulation()
   def finHelpRoutes: FinHelpRoutes = new FinHelpRoutes()
+  def finHelpSimulation: FinHelpSimulation = new FinHelpSimulation()
 
   setUp(
     onboardSimulation.script.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
-      reachRps(rps.toInt / 4) in (20 seconds),
+      reachRps(rps.toInt / 6) in (20 seconds),
       holdFor(1 hour)
     ),
     cabinetSimulation.script.inject(rampUsers(sessions.toInt) during(20 second)).throttle(
-      reachRps(rps.toInt / 4) in (20 seconds),
+      reachRps(rps.toInt / 6) in (20 seconds),
       holdFor(1 hour)
     ),
-    finHelpRoutes.getDashboard1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
-      reachRps(rps.toInt / 4) in (1 seconds),
-      holdFor(1 hour)
-    ),
-    finHelpRoutes.postFinHelp1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
+    finHelpRoutes.getDashboard1.inject(rampUsers(sessions.toInt * 20) during(20 second)).throttle(
       reachRps(rps.toInt / 6) in (1 seconds),
       holdFor(1 hour)
     ),
-    finHelpRoutes.getStatus1.inject(rampUsers(sessions.toInt * 10) during(20 second)).throttle(
-      reachRps(rps.toInt / 4) in (1 seconds),
+    finHelpRoutes.postFinHelp1.inject(rampUsers(sessions.toInt * 20) during(20 second)).throttle(
+      reachRps(rps.toInt / 6) in (1 seconds),
+      holdFor(1 hour)
+    ),
+    finHelpRoutes.getStatus1.inject(rampUsers(sessions.toInt * 20) during(20 second)).throttle(
+      reachRps(rps.toInt / 6) in (1 seconds),
+      holdFor(1 hour)
+    ),
+    finHelpSimulation.script.inject(rampUsers(sessions.toInt * 20) during(20 second)).throttle(
+      reachRps(rps.toInt / 6) in (1 seconds),
       holdFor(1 hour)
     ),
   ).protocols(httpConf).maxDuration(1 hour)
