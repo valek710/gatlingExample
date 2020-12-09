@@ -17,6 +17,7 @@ protected class BaseSimulation extends Simulation {
   protected val workflowTemplateId: String = System.getProperty("WORKFLOW_TEMPLATE_ID")
   protected val draftId: String = System.getProperty("DRAFT_ID")
   protected val documentTemplateId: String = System.getProperty("DOCUMENT_TEMPLATE_ID")
+  protected val finHelpToken: String = System.getProperty("FIN_HELP_TOKEN")
 
   /***
    * http configuration

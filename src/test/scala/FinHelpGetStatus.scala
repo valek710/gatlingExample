@@ -13,7 +13,7 @@ class FinHelpGetStatus extends BaseSimulation {
         .post("/diia-mobile-app/fin-help/get-status")
         .headers(
           Map(
-            "Authorization" -> "Basic ZGlpYS1zdGFnZTp1R2V6a0RwZzlYb1V2dWFTZnFpc01XQVpTWDFmM3Q0WHBEMWhhdkRZMENUa0g3alhyRGRaNVdlcTdUUGVRVGho",
+            "Authorization" -> finHelpToken,
             "Content-Type" -> "application/json"
           )
         )
