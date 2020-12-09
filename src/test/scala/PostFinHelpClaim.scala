@@ -17,7 +17,7 @@ class PostFinHelpClaim extends BaseSimulation {
         .post("/diia-mobile-app/fin-help/claim")
         .headers(
           Map(
-            "Authorization" -> finHelpToken,
+            "Authorization" -> finHelpToken.replaceAll("\"", ""),
             "Content-Type" -> "application/json"
           )
         )

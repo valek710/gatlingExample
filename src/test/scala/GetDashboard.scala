@@ -18,7 +18,7 @@ class GetDashboard extends BaseSimulation {
         .post("/diia-mobile-app/fin-help/get-dashboard")
         .headers(
           Map(
-            "Authorization" -> finHelpToken,
+            "Authorization" -> finHelpToken.replaceAll("\"", ""),
             "Content-Type" -> "application/json"
           )
         )

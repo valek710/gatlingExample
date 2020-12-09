@@ -16,6 +16,10 @@
 		<param name="Append" value="false" />
 	</appender>
 
+	<logger name="io.gatling.http.engine.response" level="DEBUG" additivity="false">
+		<appender-ref ref="ERROR"/>
+	</logger>
+
 	<root level="WARN">
 		<appender-ref ref="CONSOLE" />
 	</root>
