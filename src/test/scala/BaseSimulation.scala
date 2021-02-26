@@ -18,6 +18,7 @@ protected class BaseSimulation extends Simulation {
   protected val draftId: String = System.getProperty("DRAFT_ID")
   protected val documentTemplateId: String = System.getProperty("DOCUMENT_TEMPLATE_ID")
   protected val finHelpToken: String = System.getProperty("FIN_HELP_TOKEN")
+  protected val covidToken: String = System.getProperty("COVID_TOKEN")
 
   /***
    * http configuration
