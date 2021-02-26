@@ -2,11 +2,13 @@ import io.gatling.core.Predef.{holdFor, _}
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration.DurationInt
+
 class AuthSimulation extends BaseSimulation {
   private val userAuth: ScenarioBuilder = scenario("User auth")
     .exec(
       http("get id.../auth")
-        .get(idUrl + "auth")
+        .get(idUrl + "/auth")
         .header("token", token)
         .check(status.is(200))
     )
@@ -14,7 +16,7 @@ class AuthSimulation extends BaseSimulation {
   private val userGetServerList: ScenarioBuilder = scenario("User get server list ")
     .exec(
       http("get id.../authorise/eds/serverList")
-        .get(idUrl + "authorise/eds/serverList")
+        .get(idUrl + "/authorise/eds/serverList")
         .check(status.is(200))
     )
 
@@ -40,4 +42,16 @@ class AuthSimulation extends BaseSimulation {
     GET /tasks/unread/count?filters[finished]=0&filters[deleted]=0&filters[assigned_to]=me&filters[filtered]=false
     GET /tasks/unread/count?filters[finished]=0&filters[deleted]=0&filters[assigned_to]=unit&filters[filtered]=false
   */
+
+  setUp(
+    userAuth.inject(atOnceUsers(sessions.toInt / 2)).throttle(
+      reachRps(rps.toInt / 2) in (1 seconds),
+      holdFor(30 minutes)
+    ),
+    userGetServerList.inject(atOnceUsers(sessions.toInt / 2)).throttle(
+      reachRps(rps.toInt / 2) in (1 seconds),
+      holdFor(30 minutes)
+    ),
+  ).protocols(httpConf).maxDuration(30 minutes)
+    .assertions(global.successfulRequests.percent.gt(95))
 }
